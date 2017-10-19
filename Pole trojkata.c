@@ -9,7 +9,7 @@ int main()
  printf("wpisz wysokosc ");
  scanf("%d" , &h);
  printf("Pole trojkata = %d",a*h/2);
-	
+		printf("Warsztat");
  return 0;
  }
  
