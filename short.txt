@@ -1,0 +1,10 @@
+ BEGIN {c=0}
+ /a/{++C}
+ END{ print c }
+s
+d
+c
+f
+a
+e
+g

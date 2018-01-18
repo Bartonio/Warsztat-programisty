@@ -1,0 +1,7 @@
+sed -n '10,15p' plik.txt
+
+
+sed -n '1,10w short.txt' plik.txt  
+
+
+sed 's/quis/quod/' loremipsum.txt

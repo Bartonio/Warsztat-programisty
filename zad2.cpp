@@ -2,6 +2,8 @@
 using namespace std;
 int main()
 {int tab[7];
+	int i=0;
+	int j=0;
 	for(int i=0; i<7; i++)
 	{
 	cin>>tab[i];	
@@ -10,7 +12,7 @@ int main()
 	
 	
 	for(int i=0; i<7; i++)
-	{for(int j=0; j<6; j++)
+	{for(int j=0; j<6-i; j++)
 		{if(tab[j]>=tab[j+1])
 			swap(tab[j],tab[j+1]);
 		}
