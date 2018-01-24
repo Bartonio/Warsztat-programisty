@@ -1,0 +1,78 @@
+Rozpakuj katalog archiwum.tar.gz
+tar -xvf archiwum.tar.gz
+Sprawdź sumę kontrolną pliku genom.txt
+md5sum -c genom.txt
+=======================================
+Zadanie 1
+=======================================
+1. Plik zawiera współrzędne ludzkiego genomu w transkrypcji RefSeq. Kolejne kolumny oznaczają
+chrom	strand	txStart	txEnd	cdsStart	cdsEnd	exonCount	exonStarts	exonEnds	proteinID	alignID
+	
+4. - Spójrz na plik  
+	-Ile jest pól?
+awk '{print NF}' genom.txt | head -n 1
+16 
+	-Ile to jestlinii?  
+wc -l genom.txt
+47306
+	
+5 - W jaki sposób są rozdzielone pola? 
+Są rozdzielone tabulacjami
+
+6 - Ile transkryptów (NM_ *) jest reprezentowanych w pliku? 
+grep -c 'NM_ *' genom.txt 
+36090
+7 -Ile genów jest reprezentowanych w pliku? 
+awk '{print $2}' genom.txt | sort | uniq | wc -l
+46258
+8 - Czy jakiekolwiek transkrypty są reprezentowane więcej niż jeden raz?   
+    Jeśli tak, które [Umieść listę w pliku "mult_transcripts.txt"]?
+awk '{print $2}' genom.txt | sort | uniq >> mult_transcripts.txt
+
+
+9  -Ile chromosomów jest reprezentowanych? 
+cut -f3 genom.txt | uniq | wc -l
+18
+10 - Jakie geny znajdują się na chromosomie Y? Umieść je w pliku "chrY_genes.txt"
+grep -n chrY genom.txt | cut -f2 >> chrY_genes.txt	
+
+11 -Utwórz osobne pliki dla genów "+" i "-", o nazwach "genom_plus.txt" i "genom_neg.txt"
+awk '{if ($4 == "+") print}' genom.txt >> genom_plus.txt
+
+awk '{if ($4 == "-") print}' genom.txt >> genom_neg.txt
+
+
+12- Posortuj wszystkie dane w genom_plus.txt, najpierw przez chromosom (rosnąco), a następnie przez pierwszą współrzędną (malejąco).
+sed -e 's/chr//g' genom_plus.txt | sort -t , -rk5 >>genom_plus.txt
+
+13- Podziel równomiernie wszystkie dane na 4 pliki o nazwach "Part_1.txt", "Part_2.txt" itd. Użyj komendy split.
+split -l 11827 --numeric-suffixes=1 --additional-suffix=.txt genom.txt Part_ 
+
+14- Jakie 5 genów pojawia się na "prawym końcu" (np. Mają najwyższe współrzędne) chr 19?
+
+cat genom.txt | egrep "\schr10\s" | sort -k5 | cut -f2 | tail -5
+NM_001351017
+NM_014472
+NM_001256620
+NM_001351012
+NM_032211
+
+15- W oparciu o pole z genami, jaki jest najdłuższy chromosom? Jaka jest jego długość?
+-
+
+16- Jakie geny zawierają litery "BMP"? Umieść je w pliku "BMPs_etc.txt"
+grep -n BMP genom.txt | cut -f2 >> BMPs_etc.txt	
+
+17- Które z tych "genów BMP" mają więcej niż jeden transkrypt?
+cat BMPs_etc.txt | wc -l
+cat BMPs_etc.txt | cut -f2 | sort | uniq | wc -l
+Żaden , kazdy ma jeden.(Oba zliczenia wynoszą tyle samo)
+
+18- Jaki gen ma najdłuższą długość genomu (odległość między początkiem i końcem transkrypcji)? Najkrótszy?
+-	
+
+
+19- Zmień format pliku, tak aby zawierał dwa pola:  RefSeq<tab>chr:start-end
+	ex: NM_001039886	chr19:57722720-57751115
+-
+
